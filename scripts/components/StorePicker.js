@@ -7,23 +7,22 @@ import autobind from 'autobind-decorator';
 @autobind
 class StorePicker extends React.Component {
 
-    goToStore(event) {
+    gotoStore(event) {
         event.preventDefault();
         var storeId = this.refs.storeId.value;
         this.transitionTo('/store/' + storeId);
     }
 
     render() {
-        var name = "Abhishek";
         return (
-            <form className="store-selector" onSubmit={this.goToStore}>
-                <h2>Please enter a Store Name, {name}</h2>
+            <form className="store-selector" onSubmit={this.gotoStore}>
+                <h2>Please enter a store</h2>
                 <input type="text" ref="storeId" defaultValue={h.getFunName()} required />
                 <input type="submit" />
             </form>
         )
     }
-};
+}
 
 reactMixin.onClass(StorePicker, Navigation);
 

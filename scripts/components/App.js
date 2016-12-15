@@ -18,8 +18,8 @@ var base = Rebase.createClass('https://catch-of-the-day-d87f3.firebaseio.com/');
 class App extends React.Component {
     // mixins: [],
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             fishes: {},
