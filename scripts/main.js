@@ -15,39 +15,39 @@ var Rebase = require('re-base');
 var base = Rebase.createClass('https://catch-of-the-day-d87f3.firebaseio.com/');
 
 var App = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             fishes: {},
             order: {}
         }
     },
-    componentDidMount : function () {
+    componentDidMount: function () {
         base.syncState(this.props.params.storeId + '/fishes', {
-            context : this,
-            state : 'fishes'
+            context: this,
+            state: 'fishes'
         });
     },
-    componentWillUpdate : function (nextProps, nextState) {
+    componentWillUpdate: function (nextProps, nextState) {
         localStorage.setItem('order-' + this.props.params.storeId, JSON.stringify(nextState.order));
     },
-    addToOrder: function(key) {
+    addToOrder: function (key) {
         this.state.order[key] = this.state.order[key] + 1 || 1;
         this.setState({ order: this.state.order });
     },
-    addFish: function(fish) {
+    addFish: function (fish) {
         var timestamp = (new Date()).getTime();
         this.state.fishes['fish-' + timestamp] = fish;
         this.setState({ fishes: this.state.fishes });
     },
-    loadSamples: function() {
+    loadSamples: function () {
         this.setState({
             fishes: require('./sample-fishes')
         });
     },
-    renderFish: function(key) {
+    renderFish: function (key) {
         return <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />
     },
-    render: function() {
+    render: function () {
         return (
             <div className="catch-of-the-day">
                 <div className="menu">
@@ -65,11 +65,11 @@ var App = React.createClass({
 
 
 var Fish = React.createClass({
-    onButtonClick: function() {
+    onButtonClick: function () {
         var key = this.props.index;
         this.props.addToOrder(key);
     },
-    render: function() {
+    render: function () {
         var details = this.props.details;
         var isAvailable = (details.status == 'available' ? true : false);
         var buttonText = (isAvailable ? 'Add To Order' : 'Sold Out!');
@@ -89,7 +89,7 @@ var Fish = React.createClass({
 
 
 var AddFishForm = React.createClass({
-    createFish: function(event) {
+    createFish: function (event) {
         event.preventDefault();
         var fish = {
             name: this.refs.name.value,
@@ -101,7 +101,7 @@ var AddFishForm = React.createClass({
         this.props.addFish(fish);
         this.refs.fishForm.reset();
     },
-    render: function() {
+    render: function () {
         return (
             <form className="fish-edit" ref="fishForm" onSubmit={this.createFish}>
                 <input type="text" ref="name" placeholder="Fish Name" />
@@ -120,7 +120,7 @@ var AddFishForm = React.createClass({
 
 
 var Header = React.createClass({
-    render: function() {
+    render: function () {
         return (
             <header className="top">
                 <h1>Catch
@@ -137,7 +137,7 @@ var Header = React.createClass({
 });
 
 var Order = React.createClass({
-    renderOrder: function(key) {
+    renderOrder: function (key) {
         var fish = this.props.fishes[key];
         var count = this.props.order[key];
 
@@ -153,7 +153,7 @@ var Order = React.createClass({
             </li>
         )
     },
-    render: function() {
+    render: function () {
         var orderIds = Object.keys(this.props.order);
         var total = orderIds.reduce((prevTotal, key) => {
             var fish = this.props.fishes[key];
@@ -182,7 +182,7 @@ var Order = React.createClass({
 });
 
 var Inventory = React.createClass({
-    render: function() {
+    render: function () {
         return (
             <div>
                 <h2>Inventory</h2>
@@ -196,12 +196,12 @@ var Inventory = React.createClass({
 
 var StorePicker = React.createClass({
     mixins: [History],
-    goToStore: function(event) {
+    goToStore: function (event) {
         event.preventDefault();
         var storeId = this.refs.storeId.value;
         this.history.pushState(null, '/store/' + storeId);
     },
-    render: function() {
+    render: function () {
         var name = "Abhishek";
         return (
             <form className="store-selector" onSubmit={this.goToStore}>
@@ -214,7 +214,7 @@ var StorePicker = React.createClass({
 });
 
 var NotFound = React.createClass({
-    render: function() {
+    render: function () {
         return (
             <h1>Not Found</h1>
         )
