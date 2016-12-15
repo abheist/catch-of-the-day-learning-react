@@ -5,8 +5,6 @@ var CSSTransitionGroup = require('react-addons-css-transition-group');
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
-var Navigation = ReactRouter.Navigation;
-var History = ReactRouter.History;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var h = require('./helpers');
@@ -16,6 +14,14 @@ var Rebase = require('re-base');
 var base = Rebase.createClass('https://catch-of-the-day-d87f3.firebaseio.com/');
 
 var Catalyst = require('react-catalyst');
+
+
+// imports
+import NotFound from './components/NotFound'; 
+import StorePicker from './components/StorePicker';
+import Header from './components/Header';
+import Fish from './components/Fish';
+import Order from './components/Order';
 
 var App = React.createClass({
     mixins: [Catalyst.LinkedStateMixin],
@@ -90,28 +96,7 @@ var App = React.createClass({
 });
 
 
-var Fish = React.createClass({
-    onButtonClick: function () {
-        var key = this.props.index;
-        this.props.addToOrder(key);
-    },
-    render: function () {
-        var details = this.props.details;
-        var isAvailable = (details.status == 'available' ? true : false);
-        var buttonText = (isAvailable ? 'Add To Order' : 'Sold Out!');
-        return (
-            <li className="menu-fish">
-                <img src={details.image} alt={details.name} />
-                <h3 className="fish-name">
-                    {details.name}
-                    <span className="price">{h.formatPrice(details.price)}</span>
-                </h3>
-                <p>{details.desc}</p>
-                <button disabled={!isAvailable} onClick={this.onButtonClick}>{buttonText}</button>
-            </li>
-        )
-    }
-});
+
 
 
 var AddFishForm = React.createClass({
@@ -145,82 +130,8 @@ var AddFishForm = React.createClass({
 });
 
 
-var Header = React.createClass({
-    render: function () {
-        return (
-            <header className="top">
-                <h1>Catch
-                    <span className="ofThe">
-                        <span className="of">of</span>
-                        <span className="the">the</span>
-                    </span>
-                    Day
-                </h1>
-                <h3 className="tagline"><span>{this.props.tagline}</span></h3>
-            </header>
-        )
-    }
-});
 
-var Order = React.createClass({
-    renderOrder: function (key) {
-        var fish = this.props.fishes[key];
-        var count = this.props.order[key];
-        var removeButton = <button onClick={this.props.removeFromOrder.bind(null, key)}>&times;</button>
-        if (!fish) {
-            return <li key={key}>Sorry fish no lionger available! {removeButton}</li>
-        }
 
-        return (
-            <li key={key}>
-                <span>
-                    <CSSTransitionGroup component="span" transitionName="count"
-                        transitionEnterTimeout={250} transitionLeaveTimeout={250}>
-                        <span key={count}>{count}</span>
-                    </CSSTransitionGroup>
-
-                    lbs {fish.name} {removeButton}
-
-                </span>
-                <span className="price">{h.formatPrice(count * fish.price)}</span>
-            </li>
-        )
-    },
-    render: function () {
-        var orderIds = Object.keys(this.props.order);
-        var total = orderIds.reduce((prevTotal, key) => {
-            var fish = this.props.fishes[key];
-            var count = this.props.order[key];
-            var isAvailable = fish && fish.status === 'available';
-
-            if (fish && isAvailable) {
-                return prevTotal + (count * parseInt(fish.price) || 0);
-            }
-
-            return prevTotal;
-        }, 0);
-        return (
-            <div className="order-wrap">
-                <h2 className="order-title">Your Order</h2>
-
-                <CSSTransitionGroup
-                    className="order"
-                    component="ul"
-                    transitionName="order"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={500}
-                    >
-                    {orderIds.map(this.renderOrder)}
-                    <li className="total">
-                        <strong>Total:</strong>
-                        {h.formatPrice(total)}
-                    </li>
-                </CSSTransitionGroup>
-
-            </div>
-        )
-    }
-});
 
 var Inventory = React.createClass({
     renderInventory: function (key) {
@@ -248,36 +159,18 @@ var Inventory = React.createClass({
                 <button onClick={this.props.loadSamples}>Load Sample Fishes</button>
             </div>
         )
-    }
-});
-
-
-var StorePicker = React.createClass({
-    mixins: [History],
-    goToStore: function (event) {
-        event.preventDefault();
-        var storeId = this.refs.storeId.value;
-        this.history.pushState(null, '/store/' + storeId);
     },
-    render: function () {
-        var name = "Abhishek";
-        return (
-            <form className="store-selector" onSubmit={this.goToStore}>
-                <h2>Please enter a Store Name, {name}</h2>
-                <input type="text" ref="storeId" defaultValue={h.getFunName()} required />
-                <input type="submit" />
-            </form>
-        )
+    propTypes: {
+        addFish: React.PropTypes.func.isRequired,
+        loadSamples: React.PropTypes.func.isRequired,
+        fishes: React.PropTypes.object.isRequired,
+        linkState: React.PropTypes.func.isRequired,
+        removeFish: React.PropTypes.func.isRequired
     }
 });
 
-var NotFound = React.createClass({
-    render: function () {
-        return (
-            <h1>Not Found</h1>
-        )
-    }
-});
+
+
 
 
 var routes = (
