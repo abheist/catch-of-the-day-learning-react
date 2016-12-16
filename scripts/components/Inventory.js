@@ -1,8 +1,3 @@
-/*
-  Inventory
-  <Inventory/>
-*/
-
 import React from 'react';
 import AddFishForm from './AddFishForm';
 import autobind from 'autobind-decorator';

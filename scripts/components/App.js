@@ -35,7 +35,6 @@ class App extends React.Component {
     var localStorageRef = localStorage.getItem('order-' + this.props.params.storeId);
 
     if(localStorageRef) {
-      // update our component state to reflect what is in localStorage
       this.setState({
         order : JSON.parse(localStorageRef)
       });
@@ -61,9 +60,7 @@ class App extends React.Component {
 
   addFish(fish) {
     var timestamp = (new Date()).getTime();
-    // update the state object
     this.state.fishes['fish-' + timestamp] = fish;
-    // set the state
     this.setState({ fishes : this.state.fishes });
   }
 

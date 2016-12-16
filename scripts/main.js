@@ -7,10 +7,6 @@ import NotFound from './components/NotFound';
 import StorePicker from './components/StorePicker';
 import App from './components/App';
 
-/*
-  Routes
-*/
-
 var routes = (
   <Router history={createHistory()}>
     <Route path="/" component={StorePicker}/>

@@ -9,9 +9,7 @@ import autobind from 'autobind-decorator';
 @autobind
 class AddFishForm extends React.Component {
   createFish(event) {
-    // 1. Stop the form from submitting
     event.preventDefault();
-    // 2. Take the data from the form and create an object
     var fish = {
       name : this.refs.name.value,
       price : this.refs.price.value,
@@ -20,7 +18,6 @@ class AddFishForm extends React.Component {
       image : this.refs.image.value
     }
 
-    // 3. Add the fish to the App State
     this.props.addFish(fish);
     this.refs.fishForm.reset();
   }

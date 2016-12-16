@@ -1,8 +1,3 @@
-/* 
-  StorePicker
-  This will let us make <StorePicker/>
-*/
-
 import React from 'react';
 import { History } from 'react-router';
 import h from '../helpers';
@@ -14,7 +9,6 @@ class StorePicker extends React.Component {
 
   goToStore(event) {
     event.preventDefault();
-    // get the data from the input
     var storeId = this.refs.storeId.value;
     this.history.pushState(null, '/store/' + storeId);
   }

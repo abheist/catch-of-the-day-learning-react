@@ -6,7 +6,6 @@ import autobind from 'autobind-decorator';
 class Fish extends React.Component {
   
   onButtonClick() {
-    console.log("Going to add the fish: ", this.props.index);
     var key = this.props.index;
     this.props.addToOrder(key);
   }
